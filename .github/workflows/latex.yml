@@ -1,4 +1,4 @@
-name: Compile LaTeX
+name: Compile and Save PDF
 
 on:
   push:
@@ -9,15 +9,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
       - name: Install LaTeX
         run: sudo apt-get update && sudo apt-get install -y texlive-full
 
-      - name: Compile
+      - name: Compile LaTeX
         run: pdflatex main.tex
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: PDF
-          path: main.pdf
+      - name: Move PDF to repo root
+        run: mv main.pdf output.pdf
+
+      - name: Commit PDF back to repo
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add output.pdf
+          git commit -m "Auto-update PDF" || echo "No changes"
+          git push
