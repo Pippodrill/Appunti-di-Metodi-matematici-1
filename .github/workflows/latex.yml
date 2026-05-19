@@ -20,8 +20,10 @@ jobs:
       - name: Install LaTeX
         run: sudo apt-get update && sudo apt-get install -y texlive-full
 
-      - name: Compile LaTeX
-        run: pdflatex main.tex
+      - name: Compile LaTeX (2-pass fix)
+        run: |
+          pdflatex main.tex
+          pdflatex main.tex
 
       - name: Prepare output folder
         run: |
@@ -36,6 +38,7 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+
     steps:
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
