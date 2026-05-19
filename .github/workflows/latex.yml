@@ -1,8 +1,13 @@
-name: Compile LaTeX PDF
+name: Build LaTeX and Deploy PDF to Pages
 
 on:
   push:
     branches: [ main ]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
 
 jobs:
   build:
@@ -15,11 +20,22 @@ jobs:
       - name: Install LaTeX
         run: sudo apt-get update && sudo apt-get install -y texlive-full
 
-      - name: Compile document
+      - name: Compile LaTeX
         run: pdflatex main.tex
 
-      - name: Upload PDF
-        uses: actions/upload-artifact@v4
+      - name: Prepare output folder
+        run: |
+          mkdir -p public
+          mv main.pdf public/index.pdf
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: pdf
-          path: main.pdf
+          path: public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
