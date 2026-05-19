@@ -1,0 +1,528 @@
+
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[italian]{babel}
+\usepackage{amsmath,amssymb,amsthm,amsfonts,mathtools,bm}
+\usepackage{physics}
+\usepackage{mathrsfs}
+\usepackage{geometry}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\geometry{margin=1.4cm}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2mm}
+\definecolor{myblue}{RGB}{0,70,140}
+\definecolor{mygray}{RGB}{240,240,240}
+\titleformat{\section}{\large\bfseries\color{myblue}}{}{0em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{}{0em}{}
+\newtcolorbox{formulaBox}{
+colback=mygray,
+colframe=myblue,
+boxrule=0.6pt,
+arc=2mm
+}
+\begin{document}
+\begin{center}
+{\LARGE \textbf{Formulario Completo — Metodi Matematici 1}}\\
+\vspace{2mm}
+Equazioni differenziali alle derivate parziali, serie di Fourier, operatori in spazi di Hilbert, completezza, operatori compatti.
+\end{center}
+\tableofcontents
+\vspace{4mm}
+%====================================================
+\section{Serie di Fourier}
+%====================================================
+\subsection{Serie trigonometrica}
+Per $f \in L^2(-\pi,\pi)$:
+\[f(x) \sim \frac{a_0}{2}+\sum_{n=1}^{\infty}(a_n\cos nx+b_n\sin nx)\]
+con
+\[a_n=\frac{1}{\pi}\int_{-\pi}^{\pi}f(x)\cos(nx)dx\]
+\[b_n=\frac{1}{\pi}\int_{-\pi}^{\pi}f(x)\sin(nx)dx\]
+Forma complessa:
+\[f(x)=\sum_{n\in\mathbb Z} c_n e^{inx}\]
+\[c_n=\frac{1}{2\pi}\int_{0}^{2\pi}f(x)e^{-inx}dx\]
+\subsection{Ortogonalità}
+\[\int_{-\pi}^{\pi}e^{inx}e^{-imx}dx=2\pi\delta_{nm}\]
+\[\int_0^{\pi}\sin(nx)\sin(mx)dx=\frac{\pi}{2}\delta_{nm}\]
+\[\int_0^{\pi}\cos(nx)\cos(mx)dx=
+\begin{cases}
+\pi & n=m=0
+\\
+\frac{\pi}{2}\delta_{nm} & n,m>0
+\end{cases}\]
+\subsection{Convergenza}
+\begin{itemize}
+\item In $L^2$: sempre.
+\item Puntuale nei punti di continuità.
+\item Nei salti converge alla media:
+\[\frac{f(x^+)+f(x^-)}{2}\]
+\item Uniforme se $f$ è periodica e regolare ($C^1$ a tratti + continuità periodica).
+\end{itemize}
+\subsection{Parseval}
+\[\frac{1}{\pi}\int_{-\pi}^{\pi}|f(x)|^2dx
+=
+\frac{a_0^2}{2}+\sum_{n=1}^{\infty}(a_n^2+b_n^2)\]
+oppure
+\[\frac{1}{2\pi}\int_{0}^{2\pi}|f(x)|^2dx
+=
+\sum_{n\in\mathbb Z}|c_n|^2\]
+\subsection{Funzioni pari/dispari}
+\begin{itemize}
+\item $f$ pari $\Rightarrow$ solo coseni.
+\item $f$ dispari $\Rightarrow$ solo seni.
+\end{itemize}
+\subsection{Sviluppi utili}
+\[\sin^3x=\frac{3}{4}\sin x-\frac14\sin 3x\]
+\[\cos^2x=\frac{1+\cos 2x}{2}\]
+\[\sin^2x=\frac{1-\cos 2x}{2}\]
+\[\sum_{n=1}^{\infty}\frac1{n^2}=\frac{\pi^2}{6}\]
+\[\sum_{n=-\infty}^{\infty}\frac{e^{inx}}{n^2+a^2}
+=\frac{\pi}{a\sinh(\pi a)}\cosh(a(\pi-x))\]
+%====================================================
+\section{Separazione delle Variabili}
+%====================================================
+Metodo standard:
+\[u(x,t)=X(x)T(t)\]
+Sostituire nella PDE e separare:
+\[\frac{T'}{T}=\frac{X''}{X}=-\lambda\]
+Si ottengono due ODE.
+\subsection{Caso classico}
+\[X''+\lambda X=0\]
+Condizioni di Dirichlet:
+\[X(0)=X(\pi)=0\]
+Autovalori:
+\[\lambda_n=n^2\]
+Autofunzioni:
+\[X_n(x)=\sin(nx)\]
+Condizioni di Neumann:
+\[X'(0)=X'(\pi)=0\]
+Autofunzioni:
+\[X_n(x)=\cos(nx)\]
+%====================================================
+\section{Equazione del Calore}
+%====================================================
+\subsection{Forma standard}
+\[\partial_t u=\partial_{xx}u\]
+con $u(0,t)=u(\pi,t)=0$.
+\subsection{Soluzione generale}
+\[u(x,t)=\sum_{n=1}^{\infty} a_n e^{-n^2 t}\sin(nx)\]
+con
+\[a_n=\frac{2}{\pi}\int_0^{\pi}f(x)\sin(nx)dx\]
+\subsection{Metodo generale}
+\begin{enumerate}
+\item Separare variabili.
+\item Risolvere problema agli autovalori.
+\item Sviluppare dato iniziale in serie di autofunzioni.
+\item Sommare i modi.
+\end{enumerate}
+\subsection{Equazione con termine convettivo}
+Per
+\[\partial_tu=\partial_{xx}u+\partial_xu+u\]
+si usa
+\[u=e^{\alpha t+\beta x}v\]
+scegliendo $\alpha,\beta$ per eliminare termini di primo ordine.
+Tipicamente:
+\[\beta=-\frac12\]
+\[\alpha=-\frac34\]
+in modo da ottenere:
+\[\partial_t v=\partial_{xx}v\]
+%====================================================
+\section{Equazione della Corda Vibrante}
+%====================================================
+\[\partial_{tt}u=\partial_{xx}u\]
+con estremi fissi:
+\[u(0,t)=u(\pi,t)=0\]
+\subsection{Soluzione generale}
+\[u(x,t)=\sum_{n=1}^{\infty}
+\left[
+A_n\cos(nt)+B_n\sin(nt)
+\right]\sin(nx)\]
+Coefficienti:
+\[A_n=\frac2\pi\int_0^{\pi}u(x,0)\sin(nx)dx\]
+\[B_n=\frac2{n\pi}\int_0^{\pi}u_t(x,0)\sin(nx)dx\]
+\subsection{Energia}
+\[E(t)=\int_0^{\pi}
+\left[
+(u_t)^2+(u_x)^2
+\right]dx\]
+Per soluzioni regolari:
+\[\frac{dE}{dt}=0\]
+quindi energia conservata.
+\subsection{Formula di d'Alembert}
+Su $\mathbb R$:
+\[u(x,t)=F(x-t)+G(x+t)\]
+oppure
+\[u(x,t)=\frac{f(x-t)+f(x+t)}{2}
++\frac12\int_{x-t}^{x+t}g(s)ds\]
+%====================================================
+\section{Equazione di Laplace}
+%====================================================
+\[\Delta u=u_{xx}+u_{yy}=0\]
+\subsection{Rettangolo con Dirichlet}
+In $0<x<\pi$, $0<y<\pi$:
+\[u(x,y)=\sum_{n=1}^{\infty}
+\left[
+A_n\sinh(ny)+B_n\sinh(n(\pi-y))
+\right]\sin(nx)\]
+\subsection{Metodo pratico}
+Per condizioni su un solo lato:
+\[u(x,y)=\sum a_n\sin(nx)\frac{\sinh(n(\pi-y))}{\sinh(n\pi)}\]
+\subsection{Simmetrie utili}
+Se il problema è invariante per:
+\[(x,y)\leftrightarrow(y,x)\]
+allora:
+\[u(x,y)=u(y,x)\]
+sulla diagonale:
+\[u_x=u_y\]
+quindi derivata normale nulla.
+Se simmetria rispetto a:
+\[x+y=\pi\]
+allora:
+\[u_x+u_y=0\]
+sulla diagonale.
+%====================================================
+\section{Coordinate Polari}
+%====================================================
+\[\Delta u=u_{rr}+\frac1r u_r+\frac1{r^2}u_{\phi\phi}\]
+Ansatz:
+\[u(r,\phi)=R(r)\Phi(\phi)\]
+Equazioni separate:
+\[\Phi''+\lambda\Phi=0\]
+\[r^2R''+rR'-\lambda R=0\]
+\subsection{Soluzioni radiali}
+Per $\lambda=n^2$:
+\[R(r)=Ar^n+Br^{-n}\]
+Limitatezza in $r=0$:
+\[B=0\]
+\subsection{Serie armoniche}
+\[u(r,\phi)=a_0+\sum_{n=1}^{\infty}r^n
+(a_n\cos n\phi+b_n\sin n\phi)\]
+%====================================================
+\section{Spazi di Hilbert}
+%====================================================
+\subsection{Definizioni}
+Prodotto scalare:
+\[(f,g)=\int f\bar g\]
+Norma:
+\[\|f\|=\sqrt{(f,f)}\]
+Ortogonalità:
+\[(f,g)=0\]
+Base ortonormale:
+\[(e_n,e_m)=\delta_{nm}\]
+Sviluppo:
+\[f=\sum_n(f,e_n)e_n\]
+Bessel:
+\[\sum|(f,e_n)|^2\le \|f\|^2\]
+Parseval:
+\[\sum|(f,e_n)|^2=\|f\|^2\]
+%====================================================
+\section{Completezza}
+%====================================================
+\subsection{Criterio fondamentale}
+$\{f_n\}$ completo se:
+\[(f_n,g)=0\ \forall n
+\Rightarrow g=0\]
+\subsection{Fatti utili}
+\begin{itemize}
+\item I polinomi sono completi in $L^2(0,1)$.
+\item Gli esponenziali $e^{inx}$ sono completi.
+\item Seni e coseni formano basi complete.
+\item Se una combinazione lineare permette di ottenere una base completa, allora l'insieme è completo.
+\end{itemize}
+\subsection{Tecniche tipiche d'esame}
+\begin{itemize}
+\item Usare convergenza dominata.
+\item Integrare per parti.
+\item Usare Fubini.
+\item Ricondursi a Fourier.
+\item Usare parità/disparità.
+\end{itemize}
+%====================================================
+\section{Operatori Lineari}
+%====================================================
+\subsection{Definizione}
+\[T(\alpha x+\beta y)=\alpha Tx+\beta Ty\]
+\subsection{Operatore limitato}
+\[\|Tf\|\le C\|f\|\]
+Norma:
+\[\|T\|=\sup_{\|f\|=1}\|Tf\|\]
+\subsection{Aggiunto}
+\[(Tf,g)=(f,T^{\dagger}g)\]
+\subsection{Autoaggiunto}
+\[T=T^{\dagger}\]
+Autovalori reali.
+\subsection{Unitario}
+\[T^{\dagger}T=I\]
+Conserva la norma.
+\subsection{Normale}
+\[TT^{\dagger}=T^{\dagger}T\]
+Autovettori relativi ad autovalori distinti ortogonali.
+%====================================================
+\section{Operatori Integrali}
+%====================================================
+Forma:
+\[Tf(x)=\int K(x,y)f(y)dy\]
+\subsection{Compattezza}
+Se
+\[K\in L^2\]
+allora $T$ è compatto (Hilbert-Schmidt).
+\subsection{Aggiunto}
+\[T^{\dagger}f(y)=\int \overline{K(x,y)}f(x)dx\]
+%====================================================
+\section{Operatori Diagonali}
+%====================================================
+Se
+\[Te_n=a_ne_n\]
+allora:
+\[\|T\|=\sup_n|a_n|\]
+\[T^{\dagger}e_n=\bar a_ne_n\]
+Autovalori:
+\[\lambda_n=a_n\]
+Compatto se:
+\[a_n\to0\]
+%====================================================
+\section{Operatori di Riflessione e Simmetria}
+%====================================================
+Operatori tipici:
+\[Tf(x)=f(-x)\]
+\[Tf(x)=\operatorname{sgn}(x)f(x)\]
+\subsection{Funzioni pari/dispari}
+\[f=f_P+f_D\]
+con
+\[f_P(x)=\frac{f(x)+f(-x)}2\]
+\[f_D(x)=\frac{f(x)-f(-x)}2\]
+Proiettore sulle dispari:
+\[Df=f_D\]
+%====================================================
+\section{Autovalori e Autovettori}
+%====================================================
+\[Tf=\lambda f\]
+\subsection{Tecniche pratiche}
+\begin{itemize}
+\item Provare funzioni pari/dispari.
+\item Provare autofunzioni della base.
+\item Calcolare $T^2$.
+\item Usare decomposizione ortogonale.
+\end{itemize}
+\subsection{Fatti importanti}
+Se $T$ compatto autoaggiunto:
+\begin{itemize}
+\item autovalori reali;
+\item autovettori ortogonali;
+\item base ortonormale di autovettori.
+\end{itemize}
+%====================================================
+\section{Convergenze di Operatori}
+%====================================================
+\subsection{Convergenza forte}
+\[T_nx\to Tx\]
+per ogni $x$.
+\subsection{Convergenza in norma}
+\[\|T_n-T\|\to0\]
+Più forte della convergenza forte.
+\subsection{Importante}
+\[\|T_n-T\|\to0
+\Rightarrow T_nx\to Tx\]
+non viceversa.
+%====================================================
+\section{Identità Utilissime da Esame}
+%====================================================
+\[\sin(a\pm b)=\sin a\cos b\pm\cos a\sin b\]
+\[\cos(a\pm b)=\cos a\cos b\mp\sin a\sin b\]
+\[\sin a\sin b=\frac12[\cos(a-b)-\cos(a+b)]\]
+\[\cos a\cos b=\frac12[\cos(a-b)+\cos(a+b)]\]
+\[\sin a\cos b=\frac12[\sin(a+b)+\sin(a-b)]\]
+\[\cosh x=\frac{e^x+e^{-x}}2\]
+\[\sinh x=\frac{e^x-e^{-x}}2\]
+\[\cos(ix)=\cosh x\]
+\[\sin(ix)=i\sinh x\]
+%====================================================
+\section{Teoremi Utili da Citare}
+%====================================================
+\subsection{Convergenza dominata}
+Se:
+\[f_n\to f\]
+q.o. e
+\[|f_n|\le g\in L^1\]
+allora
+\[\int f_n\to\int f\]
+\subsection{Fubini}
+Permette di scambiare ordine di integrazione.
+\subsection{Riemann-Lebesgue}
+Se $f\in L^1$:
+\[\int f(x)e^{inx}dx\to0\]
+\subsection{Weierstrass}
+I polinomi sono densi in $C([a,b])$.
+\subsection{Sturm-Liouville}
+Problemi autoaggiunti:
+\[-(py')'+qy=\lambda wy\]
+producono autofunzioni ortogonali rispetto a:
+\[(f,g)_w=\int f\bar g w\]
+%====================================================
+\section{Schema Risolutivo Tipico PDE}
+%====================================================
+\begin{enumerate}
+\item Identificare PDE.
+\item Scrivere condizioni al bordo.
+\item Applicare separazione variabili.
+\item Risolvere problema agli autovalori.
+\item Sviluppare dato iniziale/contorno.
+\item Determinare coefficienti con ortogonalità.
+\item Verificare simmetrie.
+\item Controllare convergenza.
+\end{enumerate}
+%====================================================
+\section{Schema Risolutivo Tipico Operatori}
+%====================================================
+\begin{enumerate}
+\item Verificare linearità.
+\item Stimare norma.
+\item Calcolare aggiunto.
+\item Verificare:
+\begin{itemize}
+\item autoaggiunto;
+\item unitario;
+\item normale;
+\item compatto.
+\end{itemize}
+\item Trovare autovalori.
+\item Studiare convergenze.
+\end{enumerate}
+%====================================================
+\section{Trucchi Frequenti negli Esami}
+%====================================================
+\begin{itemize}
+\item Usare simmetria per annullare derivate normali.
+\item Usare decomposizione pari/dispari.
+\item Calcolare prima $T^2$.
+\item Trasformare PDE in equazione standard con cambio esponenziale.
+\item Usare completezza tramite Fourier.
+\item Per operatori integrali usare kernel.
+\item Per compattezza usare Hilbert-Schmidt.
+\item Per operatori diagonali usare direttamente la base.
+\item Per serie di Fourier usare identità trigonometriche.
+\item Per convergenza forte verificare punto per punto sui coefficienti.
+\end{itemize}
+
+%====================================================
+\section{Serie Numeriche Utili}
+%====================================================
+\subsection{Serie geometriche}
+\[\sum_{n=0}^{\infty} q^n = \frac{1}{1-q}
+\qquad |q|<1\]
+\[\sum_{n=1}^{\infty} nq^{n-1}=\frac{1}{(1-q)^2}
+\qquad |q|<1\]
+\[\sum_{n=1}^{\infty} nq^n=\frac{q}{(1-q)^2}\]
+\subsection{Serie armoniche e p-serie}
+\[\sum_{n=1}^{\infty}\frac1n\]
+diverge.
+\[\sum_{n=1}^{\infty}\frac1{n^p}\]
+converge se e solo se:
+\[p>1\]
+\subsection{Serie alternate}
+Criterio di Leibniz:
+Se:
+\begin{itemize}
+\item $a_n\ge0$
+\item $a_n$ decrescente
+\item $a_n\to0$
+\end{itemize}
+allora:
+\[\sum (-1)^n a_n\]
+converge.
+\subsection{Serie di Taylor fondamentali}
+\[e^x=\sum_{n=0}^{\infty}\frac{x^n}{n!}\]
+\[\sin x=\sum_{n=0}^{\infty}(-1)^n\frac{x^{2n+1}}{(2n+1)!}\]
+\[\cos x=\sum_{n=0}^{\infty}(-1)^n\frac{x^{2n}}{(2n)!}\]
+\[\ln(1+x)=\sum_{n=1}^{\infty}(-1)^{n+1}\frac{x^n}{n}
+\qquad |x|<1\]
+\[\frac1{1-x}=\sum_{n=0}^{\infty}x^n
+\qquad |x|<1\]
+%====================================================
+\section{Tecniche Generali di Risoluzione}
+%====================================================
+\subsection{Strategia generale per PDE}
+Per quasi tutti gli esercizi del corso il metodo principale è la separazione delle variabili.
+Bisogna:
+\begin{enumerate}
+\item identificare il tipo di PDE;
+\item guardare dominio e bordo;
+\item imporre condizioni iniziali e al contorno;
+\item scegliere una forma separabile;
+\item risolvere il problema agli autovalori;
+\item sviluppare il dato iniziale nella base di autofunzioni.
+\end{enumerate}
+Nella pratica si pone:
+\[u(x,t)=X(x)T(t)\]
+oppure:
+\[u(x,y)=X(x)Y(y)\]
+Si sostituisce nella PDE e si divide per il prodotto delle funzioni ottenendo due membri dipendenti da variabili diverse.
+Poiché devono coincidere per ogni variabile, entrambi devono essere costanti.
+\subsection{Scelta della costante di separazione}
+Di solito si pone:
+\[X''+\lambda X=0\]
+per ottenere seni e coseni.
+I tre casi fondamentali sono:
+\begin{itemize}
+\item $\lambda<0$: esponenziali/iperboliche;
+\item $\lambda=0$: soluzioni lineari;
+\item $\lambda>0$: soluzioni oscillanti.
+\end{itemize}
+Con Dirichlet o Neumann spesso l'unico caso non banale è $\lambda>0$.
+\subsection{Uso dell'ortogonalità}
+Dopo aver trovato le autofunzioni si espande il dato iniziale:
+\[f(x)=\sum a_n\sin(nx)\]
+oppure:
+\[f(x)=\sum a_n\cos(nx)\]
+Per trovare i coefficienti si moltiplica per l'autofunzione corrispondente e si integra.
+L'ortogonalità elimina tutti i termini tranne uno.
+Questo è il meccanismo fondamentale dietro Fourier.
+\subsection{Condizioni non omogenee}
+Se il bordo non è omogeneo conviene introdurre una soluzione stazionaria.
+Si pone:
+\[u=v+w\]
+con $w$ scelta in modo da soddisfare le condizioni al bordo.
+La funzione $v$ soddisferà condizioni omogenee e potrà essere sviluppata in serie.
+\subsection{Operatori lineari: schema mentale}
+Quando compare un operatore conviene controllare:
+\begin{enumerate}
+\item linearità;
+\item limitatezza;
+\item aggiunto;
+\item autoaggiuntezza;
+\item unitarietà;
+\item normalità;
+\item compattezza;
+\item autovalori/autovettori.
+\end{enumerate}
+\subsection{Tecniche tipiche per autovalori}
+Tecniche frequenti:
+\begin{itemize}
+\item usare funzioni pari/dispari;
+\item usare Fourier;
+\item usare esponenziali complessi;
+\item provare direttamente le autofunzioni della base.
+\end{itemize}
+\subsection{Completezza}
+Per mostrare completezza:
+\begin{enumerate}
+\item supporre ortogonalità a tutto il sistema;
+\item dimostrare che tutti i coefficienti di Fourier sono nulli;
+\item dedurre che la funzione è nulla.
+\end{enumerate}
+\subsection{Trucchi utili}
+\begin{itemize}
+\item usare parità/disparità per semplificare integrali;
+\item usare identità trigonometriche prodotto-somma;
+\item usare simmetrie geometriche;
+\item integrare per parti nelle serie di Fourier;
+\item usare convergenza dominata e Fubini.
+\end{itemize}
+\end{document}
+```
