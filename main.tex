@@ -2021,9 +2021,8 @@ In questo senso, il problema non è più di natura globale, ma essenzialmente lo
 A questo scopo si introduce la cosiddetta condizione di Dini, che fornisce precisamente tale controllo e che risulta sufficiente a garantire la convergenza puntuale delle somme parziali della serie di Fourier.
 
 \begin{definizione}[Condizione di Dini]
-    Sia $f(x)\in L^1([-\pi,\pi])$ e sia $x\in (-\pi,\pi)$. Diremo che $f$ rispetta la condizione di Dini nel punto $x$ se esiste $\delta\gt 0$ tale che:
-    \\
-    \\$\displaystyle\frac{f(x-t)-f(x)}{t}\in L^1([-\pi,\pi])\iff\int_{-\pi}^\pi\bigg|\frac{f(x-t)-f(x)}{t}\bigg|\,dx\lt\infty$.
+    Sia $f(x)\in L^1([-\pi,\pi])$ e sia $x\in (-\pi,\pi)$. Diremo che $f$ rispetta la condizione di Dini nel punto $x$ se $\exists \delta \gt 0$:
+    \[\displaystyle\frac{f(x-t)-f(x)}{t}\in L^1([-\delta,\delta])\iff\int_{-\delta}^\delta\bigg|\frac{f(x-t)-f(x)}{t}\bigg|\,dt\lt\infty\]
 \end{definizione}
 
 La condizione di Dini non è particolarmente restrittiva: richiede solo un controllo locale del comportamento della funzione in un intorno del punto $x$, ed è soddisfatta da molte classi di funzioni regolari. In particolare vale se $f(x)$ è derivabile in $x$, oppure se ammette derivate destra e sinistra finite, poiché in entrambi i casi il rapporto incrementale resta controllato vicino a $0$. È inoltre verificata per funzioni Lipschitziane in un intorno di $x$, dove gli incrementi sono dominati linearmente da $|t|$, e più in generale per funzioni con singolarità deboli o crescita locale moderata. La condizione esclude invece funzioni con oscillazioni troppo violente o singolarità forti tali da rendere non integrabile il rapporto incrementale vicino a $0$. Tuttavia queste situazioni sono proprio quelle in cui non ci si può aspettare una buona convergenza puntuale della serie di Fourier. In questo senso, la condizione di Dini elimina solo comportamenti patologici locali, mantenendosi abbastanza generale da includere praticamente tutte le funzioni regolari di nostro interesse.
@@ -2036,7 +2035,7 @@ Sia $f(x)\in L^1([-\pi,\pi])$ e sia $x\in (-\pi,\pi)$ un punto in cui valga la c
 \\Espandendo $D_n(t)$ si ha $f_n(x)-f(x)=\displaystyle\frac{1}{2\pi}\int_{-\pi}^\pi \frac{f(x-t)-f(x)}{t}.\frac{t}{\sin(t\backslash 2)}.\sin\bigg(\bigg(n+\frac{1}{2}\bigg)t\bigg)\,dt$.
 \\ 
 \\
-\\Consideriamo ora $g(x)=\displaystyle\frac{f(x-t)-f(x)}{t}.\frac{t}{\sin(t\backslash2)}$. Quindi $g(x)$ è il prodotto di due funzioni: la prima è in $L^1([-\pi,\pi])$ per ipotesi (condizione del Dini), la seconda è limitata (infatti il suo limite per $t\to0$ è uguale a 2), ne segue che il loro prodotto è anch'esso in $L^1([-\pi,\pi])$. Quindi abbiamo:
+\\Consideriamo ora $g(x)=\displaystyle\frac{f(x-t)-f(x)}{t}.\frac{t}{\sin(t\backslash2)}$. Quindi $g(x)$ è il prodotto di due funzioni: la prima è in $L^1([-\pi,\pi])$ per ipotesi: la condizione di Dini garantisce che l'integrale converga nell'intorno $t\in (-\delta,\delta)$ che è l'unico punto in cui potrebbe divergere dato che in tutti gli altri punti $t\in \{-\pi,\pi\}\backslash\{-\delta,\delta\}$ la funzione risulta essere ben definita. La seconda è limitata (infatti il suo limite per $t\to0$ è uguale a 2), ne segue che il loro prodotto è anch'esso in $L^1([-\pi,\pi])$. Quindi abbiamo:
 \\
 \\$f_n(x)-f(x)=\displaystyle\frac{1}{2\pi}\int _{-\pi}^\pi g(x) \sin\bigg(\bigg(n+\frac{1}{2}\bigg)t\bigg)\,dt=$, riscrivendo il termine sinusoidale in forma complessa otteniamo $f_n(x)-f(x)=\frac{1}{4\pi i}\bigg[\int_{-\pi}^{\pi} g(t)\,e^{i\left(n+\frac12\right)t}\,dt +\int_{-\pi}^{\pi} g(t)\,e^{-i\left(n+\frac12\right)t}\,dt
 \bigg]$.
@@ -2046,7 +2045,7 @@ Sia $f(x)\in L^1([-\pi,\pi])$ e sia $x\in (-\pi,\pi)$ un punto in cui valga la c
     
 \end{teorema}
 
-Un aspetto fondamentale che emerge dallo studio svolto è la differenza tra convergenza in norma e convergenza puntuale delle serie di Fourier. La convergenza in norma (ad esempio in $L^2([-\pi,\pi])$) descrive un controllo globale medio dell’errore tra funzione e somme parziali, il che significa che la differenza tra funzione e approssimazioni diventa trascurabile in media su tutto il dominio. Tuttavia, questo tipo di convergenza non fornisce informazioni sul comportamento in un singolo punto. La convergenza puntuale, invece, è un fenomeno localmente dipendente, che riguarda il limite di $f(x)$ per ogni singolo $x$. Come abbiamo visto, essa non segue automaticamente dalla convergenza in norma e richiede ipotesi aggiuntive sul comportamento locale della funzione, come la condizione di Dini o, in generale, condizioni di regolarità puntuale. In altre parole, mentre la convergenza in norma garantisce una buona approssimazione globale, la convergenza puntuale descrive in modo molto più fine come la serie si comporta punto per punto, rivelando fenomeni più delicati legati alla struttura locale della funzione e al ruolo oscillatorio del nucleo di Dirichlet.
+Un aspetto fondamentale che emerge dallo studio svolto è la differenza tra convergenza in norma e convergenza puntuale delle serie di Fourier. La convergenza in norma (ad esempio in $L^2([-\pi,\pi])$) descrive un controllo globale medio dell’errore tra funzione e somme parziali, il che significa che la differenza tra funzione e approssimazioni diventa trascurabile in media su tutto il dominio. Tuttavia, questo tipo di convergenza non fornisce informazioni sul comportamento in un singolo punto. La convergenza puntuale, invece, è un fenomeno localmente dipendente, che riguarda il limite di $f(x)$ per ogni singolo $x$. Come abbiamo visto, essa non segue automaticamente dalla convergenza in norma e richiede ipotesi aggiuntive sul comportamento locale della funzione, come la condizione di Dini o, in generale, condizioni di regolarità puntuale. In altre parole, mentre la convergenza in norma garantisce una buona approssimazione globale, la convergenza puntuale descrive in modo molto più fine come la serie si comporta punto per punto.
 
 \newpage
 
